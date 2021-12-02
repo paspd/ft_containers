@@ -60,6 +60,8 @@
         "unordered_map": "cpp",
         "utility": "cpp",
         "iostream": "cpp",
-        "memory_resource": "cpp"
+        "memory_resource": "cpp",
+        "__bits": "cpp",
+        "clocale": "cpp"
     }
 }

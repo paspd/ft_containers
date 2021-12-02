@@ -84,15 +84,20 @@ namespace ft {
         
         public: // Constructor - Destructor
 
-            explicit vector(const allocator_type& alloc = allocator_type()): _size(0), _size_max(0), _array(NULL), _alloc(alloc) {} // Default
+            explicit vector (const allocator_type& alloc = allocator_type()): _size(0), _size_max(0), _array(NULL), _alloc(alloc) {} // Default
             explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _size(0), _size_max(n), _alloc(alloc) { _array = _alloc.allocate(_size_max); for (size_t i = _size; i < _size_max; i++, _size++) _alloc.construct(_array + _size, val); } // Size + value
-            template <class InputIterator> vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) { for (InputIterator tmp(first); tmp != last; tmp++) _size_max++; _array = _alloc.allocate(_size_max);}
-            virtual ~vector () { _alloc.deallocate(_array, _size_max); } // Destructor
+            // template <class InputIterator> explicit vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _size(0), _size_max(0), _alloc(alloc) { for (InputIterator tmp(first); tmp != last; tmp++) _size_max++; _array = _alloc.allocate(_size_max); while (first != last) { _alloc.construct(_array + _size, *first); first++; _size++; } }
+            explicit vector (const ft::vector<value_type> & rhs): _size(0), _size_max(rhs._size_max), _alloc(rhs._alloc) { _array = _alloc.allocate(_size_max); for (size_t i = 0; i < rhs._size; i++, _size++) _alloc.construct(_array + _size, *(rhs._array + _size)); } // Copy
+            virtual ~vector () { for (size_t i = 0; i < _size_max; i++) _alloc.destroy(_array + i); _alloc.deallocate(_array, _size_max); } // Destructor
 
         public: // Operator overloading
 
             reference operator[] (size_type n) { return _array[n]; }
             const_reference operator[] (size_type n) const { return _array[n]; }
+
+        public: // Capacity member function
+            bool empty() const { return !size() ? true : false ;}
+            size_t size() const { return _size; }
     };
 }
 
