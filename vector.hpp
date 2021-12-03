@@ -84,11 +84,15 @@ namespace ft {
         
         public: // Constructor - Destructor
 
-            explicit vector (const allocator_type& alloc = allocator_type()): _size(0), _size_max(0), _array(NULL), _alloc(alloc) {} // Default
-            explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _size(0), _size_max(n), _alloc(alloc) { _array = _alloc.allocate(_size_max); for (size_t i = _size; i < _size_max; i++, _size++) _alloc.construct(_array + _size, val); } // Size + value
-            // template <class InputIterator> explicit vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _size(0), _size_max(0), _alloc(alloc) { for (InputIterator tmp(first); tmp != last; tmp++) _size_max++; _array = _alloc.allocate(_size_max); while (first != last) { _alloc.construct(_array + _size, *first); first++; _size++; } }
-            explicit vector (const ft::vector<value_type> & rhs): _size(0), _size_max(rhs._size_max), _alloc(rhs._alloc) { _array = _alloc.allocate(_size_max); for (size_t i = 0; i < rhs._size; i++, _size++) _alloc.construct(_array + _size, *(rhs._array + _size)); } // Copy
+            explicit vector (): _size(0), _size_max(0), _array(NULL), _alloc(NULL) {} // Default
+            explicit vector( const Allocator & alloc ): _size(0), _size_max(0), _array(NULL), _alloc(alloc) {}
+            explicit vector (size_type count, const value_type & value = value_type(), const allocator_type & alloc = allocator_type()): _size(0), _size_max(count), _alloc(alloc) { _array = _alloc.allocate(_size_max); for (size_t i = _size; i < _size_max; i++, _size++) _alloc.construct(_array + _size, value); } // Size + value
+            // template <class InputIt> explicit vector (InputIt first, InputIt last, const allocator_type& alloc = allocator_type()): _size(0), _size_max(0), _alloc(alloc) { for (InputIterator tmp(first); tmp != last; tmp++) _size_max++; _array = _alloc.allocate(_size_max); while (first != last) { _alloc.construct(_array + _size, *first); first++; _size++; } }
+            explicit vector (const ft::vector<value_type> & other): _size(0), _size_max(other._size_max), _alloc(other._alloc) { _array = _alloc.allocate(_size_max); for (size_t i = 0; i < _size_max; i++, _size++) _alloc.construct(_array + _size, *(other._array + _size)); } // Copy
+            
             virtual ~vector () { for (size_t i = 0; i < _size_max; i++) _alloc.destroy(_array + i); _alloc.deallocate(_array, _size_max); } // Destructor
+
+            vector & operator=(const vector & other) { for (size_t i = 0; i < _size_max; i++) _alloc.destroy(_array + i); _alloc.deallocate(_array, _size_max); _size_max = other._size_max; _size = 0; _alloc = other._alloc; _array = _alloc.allocate(_size_max); for (size_t i = 0; i < _size_max; i++, _size++) _alloc.construct(_array + i, *(other._array + i)); return *this; }
 
         public: // Operator overloading
 
