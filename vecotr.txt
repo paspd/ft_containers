@@ -4,7 +4,7 @@
 constructor (only iterator)
 // destructor //
 // operator= //
-assign
+assign -> resize before
 get_allocator
 
 /////////////////////
@@ -24,9 +24,9 @@ rend
 
 /////////////////////
 
-empty
-size
-max_size
+// empty //
+// size //
+// max_size //
 reserve
 capecity
 
