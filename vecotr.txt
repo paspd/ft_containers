@@ -17,8 +17,8 @@ data
 
 /////////////////////
 
-begin
-end
+// begin //
+// end //
 rbegin
 rend
 
@@ -27,12 +27,12 @@ rend
 // empty //
 // size //
 // max_size //
-reserve
-capecity
+// reserve //
+// capacity //
 
 /////////////////////
 
-clear
+// clear //
 insert
 erase
 push_back

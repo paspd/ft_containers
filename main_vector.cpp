@@ -15,7 +15,7 @@ int main(int ac, char **av){
         ft::vector<int> too_short(-1000, 3);
     }
     catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
+        // std::cerr << e.what() << '\n';
     }
     
 
@@ -93,40 +93,119 @@ int main(int ac, char **av){
  
     // std::cout << "====================================================================" << std::endl << std::endl;
 
-    std::cout << "Test " << nb_test++ << ": Assign function" << std::endl << std::endl; {
-   
-    ft::vector<char> tmp(20, 'a');
-    for (size_t i = 0; i < tmp.size(); i++)
-        std::cout << tmp[i];
-    std::cout << std::endl << std::endl;
-    
-    tmp.assign(8, 'b');
-    for (size_t i = 0; i < tmp.size(); i++)
-        std::cout << tmp[i];
-    std::cout << std::endl << std::endl;
-
-    tmp.assign(4, 'c');
-    for (size_t i = 0; i < tmp.size(); i++)
-        std::cout << tmp[i];
-    std::cout << std::endl << std::endl;
-    
-    tmp.assign(100, 'd');
-    for (size_t i = 0; i < tmp.size(); i++)
-        std::cout << tmp[i];
-    std::cout << std::endl << std::endl;
-    
-    } std::cout << "====================================================================" << std::endl << std::endl;
+    // std::cout << "Test " << nb_test++ << ": Assign function" << std::endl << std::endl; {
+//    
+    // ft::vector<char> tmp(20, 'a');
+    // for (size_t i = 0; i < tmp.size(); i++)
+        // std::cout << tmp[i];
+    // std::cout << std::endl << std::endl;
+    // 
+    // tmp.assign(8, 'b');
+    // for (size_t i = 0; i < tmp.size(); i++)
+        // std::cout << tmp[i];
+    // std::cout << std::endl << std::endl;
+// 
+    // tmp.assign(4, 'c');
+    // for (size_t i = 0; i < tmp.size(); i++)
+        // std::cout << tmp[i];
+    // std::cout << std::endl << std::endl;
+    // 
+    // tmp.assign(100, 'd');
+    // for (size_t i = 0; i < tmp.size(); i++)
+        // std::cout << tmp[i];
+    // std::cout << std::endl << std::endl;
+    // 
+    // } std::cout << "====================================================================" << std::endl << std::endl;
 
  
     std::cout << "Test " << nb_test++ << ": Size member function" << std::endl << std::endl; {
 
     ft::vector<int> size_42(42, 21);
+
     std::cout << "ft::vector<int> size_42(42, 42); | size_42.size() : " << size_42.size() << std::endl << std::endl;
 
     if (ac > 1) {
         ft::vector<char*> size_int_max(INT_MAX, (char *)"Hello!");
+
         std::cout << "ft::vector<char*> size_int_max(INT_MAX, (char *)\"Hello!\"); | size_int_max.size() : " << size_int_max.size() << std::endl << std::endl;
     }
+
+    } std::cout << "====================================================================" << std::endl << std::endl;
+    
+    std::cout << "Test " << nb_test++ << ": Reserve member function" << std::endl << std::endl; {
+
+    ft::vector<char> tmp(10, 'P');
+    
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i];
+    std::cout << std::endl << std::endl;
+
+    tmp.reserve(20);
+
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i];
+    std::cout << std::endl << std::endl;
+
+    } std::cout << "====================================================================" << std::endl << std::endl;
+    
+    std::cout << "Test " << nb_test++ << ": Clear membre function" << std::endl << std::endl; {
+
+    ft::vector<int> tmp(20, 1807);
+    
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    {ft::vector<int>::iterator its = tmp.end();
+
+    for (ft::vector<int>::iterator it = tmp.begin(); it != its; it++)
+        std::cout << *it << " ";
+    std::cout << std::endl << std::endl;}
+
+    tmp.clear();
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    {ft::vector<int>::iterator its = tmp.end();
+
+    for (ft::vector<int>::iterator it = tmp.begin(); it != its; it++) 
+        std::cout << *it;
+    std::cout << std::endl << std::endl;}
+
+    } std::cout << "====================================================================" << std::endl << std::endl;
+
+    std::cout << "Test " << nb_test++ << ": Insert membre function" << std::endl << std::endl; {
+
+    ft::vector<int> tmp(2, 1);
+    
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i] << " ";
+    std::cout << std::endl << std::endl;
+    
+    tmp.insert(tmp.begin(), 2);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i] << " ";
+    std::cout << std::endl << std::endl;
+
+    tmp.insert(tmp.begin() + 2, 3);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i] << " ";
+    std::cout << std::endl << std::endl;
 
     } std::cout << "====================================================================" << std::endl << std::endl;
 }
