@@ -33,12 +33,12 @@ rend
 /////////////////////
 
 // clear //
-insert
-erase
-push_back
-pop_back
-resize
-swap
+// insert //
+// erase //
+// push_back //
+// pop_back //
+// resize //
+// swap //
 
 /////////////////////
 

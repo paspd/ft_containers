@@ -358,7 +358,73 @@ int main(int ac, char **av){
     
     } std::cout << "====================================================================" << std::endl << std::endl;
 
-    std::cout << "Test " << nb_test++ << ": Erase membre function" << std::endl << std::endl; {
+    // std::cout << "Test " << nb_test++ << ": Erase membre function" << std::endl << std::endl; {
+
+    // ft::vector<int> tmp(1, 0);
+
+    // std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    // std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    // for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+    
+    // for (size_t i = 1; i < 100; i++)
+    //     tmp.insert(tmp.end(), i);    
+    
+    // std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    // std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    // for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    // tmp.erase(tmp.begin() + 50, tmp.end());
+    // std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    // std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    // for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+    
+    // tmp.erase(tmp.begin(), tmp.end());
+    // std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    // std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    // for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+    // } std::cout << "====================================================================" << std::endl << std::endl;
+
+    std::cout << "Test " << nb_test++ << ": Push_back membre function" << std::endl << std::endl; {
+
+    ft::vector<int> tmp;
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    tmp.push_back(1);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+    
+    tmp.push_back(2);
+    
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    tmp.push_back(3);
+    tmp.push_back(4);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+    
+    tmp.push_back(5);
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+    } std::cout << "====================================================================" << std::endl << std::endl;
+
+    std::cout << "Test " << nb_test++ << ": Push_back membre function" << std::endl << std::endl; {
 
     ft::vector<int> tmp(1, 0);
 
@@ -368,23 +434,105 @@ int main(int ac, char **av){
     for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
     
     for (size_t i = 1; i < 100; i++)
-        tmp.insert(tmp.end(), i);    
+        tmp.push_back(i);
     
     std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
     std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
     
     for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
 
-    tmp.erase(tmp.begin() + 50, tmp.end());
+    } std::cout << "====================================================================" << std::endl << std::endl;
+
+    std::cout << "Test " << nb_test++ << ": Pop_back membre function" << std::endl << std::endl; {
+
+    ft::vector<int> tmp(1, 0);
+
     std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
     std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
     
     for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
     
-    tmp.erase(tmp.begin(), tmp.end());
+    for (size_t i = 1; i < 100; i++)
+        tmp.push_back(i);
+    
     std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
     std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
     
     for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    for (size_t i = 0; i < 50; i++)
+        tmp.pop_back();
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    } std::cout << "====================================================================" << std::endl << std::endl;
+
+    std::cout << "Test " << nb_test++ << ": Resize membre function" << std::endl << std::endl; {
+
+    ft::vector<int> tmp(1, 0);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+    
+    for (size_t i = 1; i < 100; i++)
+        tmp.push_back(i);
+    
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    tmp.resize(50);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    tmp.resize(75, 9);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    } std::cout << "====================================================================" << std::endl << std::endl;
+
+    std::cout << "Test " << nb_test++ << ": Swap membre function" << std::endl << std::endl; {
+
+    ft::vector<int> tmp1;
+    ft::vector<int> tmp2(20, 8);
+
+    for (size_t i = 0; i < 100; i++)
+        tmp1.push_back(i);
+
+    std::cout << "tmp1.size() :" << tmp1.size() << std::endl << std::endl;
+    std::cout << "tmp1.max_size() :" << tmp1.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp1.size(); i++) std::cout << tmp1[i] << " "; std::cout << std::endl << std::endl;
+
+    std::cout << "tmp2.size() :" << tmp2.size() << std::endl << std::endl;
+    std::cout << "tmp2.max_size() :" << tmp2.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp2.size(); i++) std::cout << tmp2[i] << " "; std::cout << std::endl << std::endl;
+
+    tmp1.swap(tmp2);
+    
+    
+    std::cout << "tmp1.size() :" << tmp1.size() << std::endl << std::endl;
+    std::cout << "tmp1.max_size() :" << tmp1.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp1.size(); i++) std::cout << tmp1[i] << " "; std::cout << std::endl << std::endl;
+
+    std::cout << "tmp2.size() :" << tmp2.size() << std::endl << std::endl;
+    std::cout << "tmp2.max_size() :" << tmp2.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp2.size(); i++) std::cout << tmp2[i] << " "; std::cout << std::endl << std::endl;
+
     } std::cout << "====================================================================" << std::endl << std::endl;
 }
