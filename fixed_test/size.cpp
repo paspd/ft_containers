@@ -1,6 +1,5 @@
 #include "../vector.hpp"
 
-#include <iostream>
 
 #define TESTED_TYPE int
 

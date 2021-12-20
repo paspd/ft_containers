@@ -6,6 +6,7 @@
 #include <iterator>
 #include <vector>
 #include <stdexcept>
+#include <iostream>
 
 namespace ft {
     template <typename Iterator> class VectorIterator
@@ -248,143 +249,42 @@ namespace ft {
                 return _size_max;
             }
 
-            public: // Modifiers
-                void clear() {
-                    for (size_t i = 0; i < _size; i++)
-                        _alloc.destroy(_array + i);
-                    _size = 0;                 
-                }
+        public: // Modifiers
+            void clear() {
+                for (size_t i = 0; i < _size; i++)
+                    _alloc.destroy(_array + i);
+                _size = 0;                 
+            }
 
-                iterator insert( iterator pos, const T& value ) {
-                    if (_size + 1 > capacity()) {
-                        value_type* tmp;
-                        if (!capacity())
-                            tmp = _alloc.allocate(1);
-                        else
-                            tmp = _alloc.allocate(capacity() * 2);
-                        int tmp_i = 0;
-                        int array_i = 0;
-                        for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
-                            _alloc.construct(tmp + tmp_i, *it);
-                            _alloc.destroy(_array + array_i);
-                        }
-                        _alloc.construct(tmp + tmp_i++, value);
-                        for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
-                            _alloc.construct(tmp + tmp_i, *pos);
-                            _alloc.destroy(_array + array_i);
-                        }
-                        if (capacity()) {
-                            _alloc.deallocate(_array, capacity());
-                            _size_max = capacity() * 2;
-                        }
-                        else
-                            _size_max = 1;
-                        _size++;
-                        _array = tmp;
+            iterator insert( iterator pos, const T& value ) {
+                size_type pos_len = &(*pos) - begin();
+                if (_size + 1 > capacity()) {
+                    value_type* tmp;
+                    if (!capacity())
+                        tmp = _alloc.allocate(1);
+                    else
+                        tmp = _alloc.allocate(capacity() * 2);
+                    int tmp_i = 0;
+                    int array_i = 0;
+                    for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+                        _alloc.construct(tmp + tmp_i, *it);
+                        _alloc.destroy(_array + array_i);
                     }
-                    else {
-                        value_type* tmp = _alloc.allocate(capacity());
-                        int tmp_i = 0;
-                        int array_i = 0;
-                        for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
-                            _alloc.construct(tmp + tmp_i, *it);
-                            _alloc.destroy(_array + array_i);
-                        }
-                        _alloc.construct(tmp + tmp_i++, value);
-                        for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
-                            _alloc.construct(tmp + tmp_i, *pos);
-                            _alloc.destroy(_array + array_i);
-                        }
+                    _alloc.construct(tmp + tmp_i++, value);
+                    for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+                        _alloc.construct(tmp + tmp_i, *pos);
+                        _alloc.destroy(_array + array_i);
+                    }
+                    if (capacity()) {
                         _alloc.deallocate(_array, capacity());
-                        _size++;
-                        _array = tmp;
+                        _size_max = capacity() * 2;
                     }
-                    return begin();
+                    else
+                        _size_max = 1;
+                    _size++;
+                    _array = tmp;
                 }
-                void insert( iterator pos, size_type count, const T& value ) {
-                    if (size() + count > capacity()) {
-                        size_type tmp_size = size() + count;
-                        value_type* tmp = _alloc.allocate(tmp_size);
-                        size_type tmp_i = 0;
-                        size_type array_i = 0;
-                        for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
-                            _alloc.construct(tmp + tmp_i, *it);
-                            _alloc.destroy(_array + array_i);
-                        }
-                        for (size_t i = 0; i < count; i++) _alloc.construct(tmp + tmp_i++, value);
-                        for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
-                            _alloc.construct(tmp + tmp_i, *pos);
-                            _alloc.destroy(_array + array_i);
-                        }
-                        _alloc.deallocate(_array, capacity());
-                        _size_max = tmp_size;
-                        _size += count;
-                        _array = tmp;
-                    }
-                    else {
-                        value_type* tmp = _alloc.allocate(capacity());
-                        size_type tmp_i = 0;
-                        size_type array_i = 0;
-                        for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
-                            _alloc.construct(tmp + tmp_i, *it);
-                            _alloc.destroy(_array + array_i);
-                        }
-                        for (size_t i = 0; i < count; i++) _alloc.construct(tmp + tmp_i++, value);
-                        for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
-                            _alloc.construct(tmp + tmp_i, *pos);
-                            _alloc.destroy(_array + array_i);
-                        }
-                        if (capacity())
-                            _alloc.deallocate(_array, capacity());
-                        _size += count;
-                        _array = tmp;
-                    }
-                }
-                // template < typename InputIt > void insert( iterator pos, InputIt first, InputIt last ) {
-                //     if (_size + (last - first) > _size_max) {
-                //         value_type* tmp;
-                //         if (!capacity())
-                //             tmp = _alloc.allocate(last - first);
-                //         else
-                //             tmp = _alloc.allocate(capacity() * 2);
-                //         int tmp_i = 0;
-                //         int array_i = 0;
-                //         for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
-                //             _alloc.construct(tmp + tmp_i, *it);
-                //             _alloc.destroy(_array + array_i);
-                //         }
-                //         while (first != last)
-                //             _alloc.construct(tmp + tmp_i++, *first++);
-                //         for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
-                //             _alloc.construct(tmp + tmp_i, *pos);
-                //             _alloc.destroy(_array + array_i);
-                //         }
-                //         _alloc.deallocate(_array, capacity());
-                //         _size_max = capacity() * 2;
-                //         _size++;
-                //         _array = tmp;
-                //     }
-                //     else {
-                //         value_type* tmp = _alloc.allocate(capacity());
-                //         int tmp_i = 0;
-                //         int array_i = 0;
-                //         for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
-                //             _alloc.construct(tmp + tmp_i, *it);
-                //             _alloc.destroy(_array + array_i);
-                //         }
-                //         while (first != last)
-                //             _alloc.construct(tmp + tmp_i++, *first++);
-                //         for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
-                //             _alloc.construct(tmp + tmp_i, *pos);
-                //             _alloc.destroy(_array + array_i);
-                //         }
-                //         _alloc.deallocate(_array, capacity());
-                //         _size++;
-                //         _array = tmp;
-                //     }
-                //}
-        
-                iterator erase( iterator pos ) {
+                else {
                     value_type* tmp = _alloc.allocate(capacity());
                     int tmp_i = 0;
                     int array_i = 0;
@@ -392,42 +292,143 @@ namespace ft {
                         _alloc.construct(tmp + tmp_i, *it);
                         _alloc.destroy(_array + array_i);
                     }
-                    pos++;
-                    _alloc.destroy(_array + array_i++);
+                    _alloc.construct(tmp + tmp_i++, value);
                     for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
                         _alloc.construct(tmp + tmp_i, *pos);
                         _alloc.destroy(_array + array_i);
                     }
                     _alloc.deallocate(_array, capacity());
-                    _size--;
+                    _size++;
                     _array = tmp;
-                    return begin();
                 }
-                iterator erase( iterator first, iterator last ) {
-                    value_type* tmp = _alloc.allocate(capacity());
-                    int tmp_i = 0;
-                    int array_i = 0;
-                    for (iterator it = begin(); it != first; it++, tmp_i++, array_i++) {
+                return begin() + pos_len;
+            }
+            void insert( iterator pos, size_type count, const T& value ) {
+                if (size() + count > capacity()) {
+                    size_type tmp_size = size() + count;
+                    value_type* tmp = _alloc.allocate(tmp_size);
+                    size_type tmp_i = 0;
+                    size_type array_i = 0;
+                    for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
                         _alloc.construct(tmp + tmp_i, *it);
                         _alloc.destroy(_array + array_i);
                     }
-                    while (first != last) {
-                        _alloc.destroy(_array + array_i++);
-                        first++;
-                    }
-                    for (iterator its = end(); last != its; last++, tmp_i++, array_i++) {
-                        _alloc.construct(tmp + tmp_i, *last);
+                    for (size_t i = 0; i < count; i++) _alloc.construct(tmp + tmp_i++, value);
+                    for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+                        _alloc.construct(tmp + tmp_i, *pos);
                         _alloc.destroy(_array + array_i);
                     }
-                    _alloc.destroy(_array + array_i);
-                    _size = tmp_i;
+                    _alloc.deallocate(_array, capacity());
+                    _size_max = tmp_size;
+                    _size += count;
                     _array = tmp;
-                    return begin();
                 }
-
-                void push_back( const T& value ) {
-                    if (_size + 1 > capacity()) {
-                        if (!capacity())
+                else {
+                    value_type* tmp = _alloc.allocate(capacity());
+                    size_type tmp_i = 0;
+                    size_type array_i = 0;
+                    for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+                        _alloc.construct(tmp + tmp_i, *it);
+                        _alloc.destroy(_array + array_i);
+                    }
+                    for (size_t i = 0; i < count; i++) _alloc.construct(tmp + tmp_i++, value);
+                    for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+                        _alloc.construct(tmp + tmp_i, *pos);
+                        _alloc.destroy(_array + array_i);
+                    }
+                    if (capacity())
+                        _alloc.deallocate(_array, capacity());
+                    _size += count;
+                    _array = tmp;
+                }
+            }
+            // template < typename InputIt > void insert( iterator pos, InputIt first, InputIt last ) {
+            //     if (_size + (last - first) > _size_max) {
+            //         value_type* tmp;
+            //         if (!capacity())
+            //             tmp = _alloc.allocate(last - first);
+            //         else
+            //             tmp = _alloc.allocate(capacity() * 2);
+            //         int tmp_i = 0;
+            //         int array_i = 0;
+            //         for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+            //             _alloc.construct(tmp + tmp_i, *it);
+            //             _alloc.destroy(_array + array_i);
+            //         }
+            //         while (first != last)
+            //             _alloc.construct(tmp + tmp_i++, *first++);
+            //         for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+            //             _alloc.construct(tmp + tmp_i, *pos);
+            //             _alloc.destroy(_array + array_i);
+            //         }
+            //         _alloc.deallocate(_array, capacity());
+            //         _size_max = capacity() * 2;
+            //         _size++;
+            //         _array = tmp;
+            //     }
+            //     else {
+            //         value_type* tmp = _alloc.allocate(capacity());
+            //         int tmp_i = 0;
+            //         int array_i = 0;
+            //         for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+            //             _alloc.construct(tmp + tmp_i, *it);
+            //             _alloc.destroy(_array + array_i);
+            //         }
+            //         while (first != last)
+            //             _alloc.construct(tmp + tmp_i++, *first++);
+            //         for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+            //             _alloc.construct(tmp + tmp_i, *pos);
+            //             _alloc.destroy(_array + array_i);
+            //         }
+            //         _alloc.deallocate(_array, capacity());
+            //         _size++;
+            //         _array = tmp;
+            //     }
+            //}
+    
+            iterator erase( iterator pos ) {
+                value_type* tmp = _alloc.allocate(capacity());
+                int tmp_i = 0;
+                int array_i = 0;
+                for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+                    _alloc.construct(tmp + tmp_i, *it);
+                    _alloc.destroy(_array + array_i);
+                }
+                pos++;
+                _alloc.destroy(_array + array_i++);
+                for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+                    _alloc.construct(tmp + tmp_i, *pos);
+                    _alloc.destroy(_array + array_i);
+                }
+                _alloc.deallocate(_array, capacity());
+                _size--;
+                _array = tmp;
+                return begin();
+            }
+            iterator erase( iterator first, iterator last ) {
+                value_type* tmp = _alloc.allocate(capacity());
+                int tmp_i = 0;
+                int array_i = 0;
+                for (iterator it = begin(); it != first; it++, tmp_i++, array_i++) {
+                    _alloc.construct(tmp + tmp_i, *it);
+                    _alloc.destroy(_array + array_i);
+                }
+                while (first != last) {
+                    _alloc.destroy(_array + array_i++);
+                    first++;
+                }
+                for (iterator its = end(); last != its; last++, tmp_i++, array_i++) {
+                    _alloc.construct(tmp + tmp_i, *last);
+                    _alloc.destroy(_array + array_i);
+                }
+                _alloc.destroy(_array + array_i);
+                _size = tmp_i;
+                _array = tmp;
+                return begin();
+            }
+            void push_back( const T& value ) {
+                if (_size + 1 > capacity()) {
+                    if (!capacity())
                             reserve(1);
                         else
                             reserve(capacity() * 2);
