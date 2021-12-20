@@ -25,90 +25,99 @@ namespace ft {
 
 	public:// Constructor - Destructor
 
-			VectorIterator(void) : array(NULL) { }
-			VectorIterator(pointer &array) : array(array) { }
-			VectorIterator(pointer const &array) : array(array) { }
-			VectorIterator(VectorIterator const &other) : array(other.array) { }
-			virtual ~VectorIterator() { }
+			VectorIterator(void) {};
+			 VectorIterator(const VectorIterator &other) { *this = other; };
+			 VectorIterator(pointer ptr): array(ptr) {};
+			 ~VectorIterator(void) {};
+    public:
+			VectorIterator &operator=(const VectorIterator &other) {
+				array = other.array;
+				return (*this);
+			};
 
-	public:// Operator overload
+			VectorIterator &operator++(void) {
+				array++;
+				return (*this);
+			};
+			VectorIterator &operator--(void) {
+				array--;
+				return (*this);
+			};
+			
+            VectorIterator operator++(int) {
+				VectorIterator tmp(*this);
+				operator++();
+				return (tmp);
+			};
+			VectorIterator operator--(int) {
+				VectorIterator tmp(*this);
+				operator--();
+				return (tmp);
+			};
 
-		reference operator=(VectorIterator const & rhs) {
-            array = rhs.array;
-            return (*this);
-        }
+			bool operator==(const VectorIterator &other) const {
+				return (array == other.array);
+			};
+			bool operator!=(const VectorIterator &other) const {
+				return (array != other.array);
+			};
+			bool operator>(const VectorIterator &other) const {
+				return (array > other.array);
+			};
+            bool operator>=(const VectorIterator &other) const {
+				return (array >= other.array);
+			};
+			bool operator<(const VectorIterator &other) const {
+				return (array < other.array);
+			};
+			bool operator<=(const VectorIterator &other) const {
+				return (array <= other.array);
+			};
 
-        reference operator*() const {
-            return *array;
-        }
-        pointer operator->() const {
-            return (pointer)std::addressof(*array);
-        }
+			value_type &operator*(void) {
+				return (*array);
+			};
+			value_type *operator->(void) {
+				return (array);
+			};
 
-        VectorIterator & operator++() {
-            ++array;
-            return *this;
-        }
-        VectorIterator operator++(int) {
-            VectorIterator tmp(*this);
-            array++;
-            return tmp;
-        }
+			VectorIterator operator+(int n) const {
+				VectorIterator tmp(*this);
+				tmp += n;
+				return (tmp);
+			};
+			VectorIterator operator-(int n) const {
+				VectorIterator tmp(*this);
+				tmp -= n;
+				return (tmp);
+			};
+            difference_type operator-(VectorIterator it) const {
+				int i = 0;
+                while (array + i != it.array)
+                    i++;
+                return (i);
+			};
 
-        VectorIterator & operator--() {
-            --array;
-            return *this; 
-        }
-        VectorIterator operator--(int) {
-            VectorIterator tmp(*this);
-            array--;
-            return tmp;
-        }
-
-        VectorIterator operator+(difference_type _n) const {
-            VectorIterator result(*this);
-            result.array += _n;
-            return result;
-        }
-        VectorIterator operator-(difference_type _n) const {
-            VectorIterator result(*this);
-            result.array -= _n;
-            return result;
-        }
-
-        VectorIterator & operator+=(difference_type _n) {
-            array += _n;
-            return *this;
-        }
-        VectorIterator & operator-=(difference_type _n) {
-            array -= _n;
-            return *this;
-        }
-
-        reference operator[](difference_type _i) const {
-            return array[_i];
-        }
-
-		bool operator==(VectorIterator const & rhs) {
-            return (this->array == rhs.array);
-        }
-
-		bool operator!=(VectorIterator const & rhs) {
-            return (this->array != rhs.array);
-        }
-
-		bool operator<(VectorIterator const & rhs) {
-            return (*this < rhs);
-        }
-		bool operator<=(VectorIterator const & rhs) {
-            return (*this <= rhs);
-        }
-		bool operator>(VectorIterator const & rhs) {
-            return (*this > rhs);
-        }
-		bool operator>=(VectorIterator const & rhs) {
-            return (*this >= rhs);
-        }
+			VectorIterator &operator+=(int n) {
+				while (n < 0)
+				{
+					(*this)--;
+					n++;
+				}
+				while (n > 0)
+				{
+					(*this)++;
+					n--;
+				}
+				return (*this);
+			};
+			VectorIterator &operator-=(int n) {
+				return (*this += -n);
+			};
+            
+			value_type &operator[](int n) const {
+				return (*(*this + n));
+			}
 
 };
 
@@ -207,14 +216,13 @@ namespace ft {
 
             size_type max_size() const {
                 return std::numeric_limits<difference_type>::max();
-                // return _alloc.max_size();
             }
 
             void reserve( size_type new_cap ) {
                 if (new_cap > max_size())
                     throw std::length_error::exception();
                 if (new_cap > _size_max) {
-                    T* tmp = _alloc.allocate(new_cap);
+                    value_type* tmp = _alloc.allocate(new_cap);
                     for (size_t i = 0; i < _size; i++) {
                         _alloc.construct(tmp + i, *(_array + i));
                         _alloc.destroy(_array + i);
@@ -238,29 +246,153 @@ namespace ft {
 
                 iterator insert( iterator pos, const T& value ) {
                     if (_size + 1 > _size_max) {
-                        T* new_array = _alloc.allocate(_size_max * 2);
-                        iterator its = end();
-                        int i = 0;
-                        for (iterator it = begin(); it != pos; it++, i++)
-                            _alloc.construct(new_array + i, *it);
-                        _alloc.construct(new_array + i++, value);
-                        for (iterator it = pos; it != its; it++, i++)
-                            _alloc.construct(new_array + i, *it);
-                        empty();
-                        _alloc.deallocate(_array, _size_max);
-                        _array = new_array;
+                        value_type* tmp;
+                        if (!capacity())
+                            tmp = _alloc.allocate(1);
+                        else
+                            tmp = _alloc.allocate(capacity() * 2);
+                        int tmp_i = 0;
+                        int array_i = 0;
+                        for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *it);
+                            _alloc.destroy(_array + array_i);
+                        }
+                        _alloc.construct(tmp + tmp_i++, value);
+                        for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *pos);
+                            _alloc.destroy(_array + array_i);
+                        }
+                        if (capacity()) {
+                            _alloc.deallocate(_array, capacity());
+                            _size_max = capacity() * 2;
+                        }
+                        else
+                            _size_max = 1;
                         _size++;
-                        _size_max *= 2;
+                        _array = tmp;
                     }
                     else {
-                        for (size_t i = 0; i < count; i++) {
+                        value_type* tmp = _alloc.allocate(capacity());
+                        int tmp_i = 0;
+                        int array_i = 0;
+                        for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *it);
+                            _alloc.destroy(_array + array_i);
                         }
-                        
+                        _alloc.construct(tmp + tmp_i++, value);
+                        for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *pos);
+                            _alloc.destroy(_array + array_i);
+                        }
+                        _alloc.deallocate(_array, capacity());
+                        _size++;
+                        _array = tmp;
                     }
                     return begin();
                 }
+                void insert( iterator pos, size_type count, const T& value ) {
+                    if (size() + count > capacity()) {
+                        size_type tmp_size = size() + count;
+                        value_type* tmp = _alloc.allocate(tmp_size);
+                        size_type tmp_i = 0;
+                        size_type array_i = 0;
+                        for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *it);
+                            _alloc.destroy(_array + array_i);
+                        }
+                        for (size_t i = 0; i < count; i++) _alloc.construct(tmp + tmp_i++, value);
+                        for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *pos);
+                            _alloc.destroy(_array + array_i);
+                        }
+                        _alloc.deallocate(_array, capacity());
+                        _size_max = tmp_size;
+                        _size += count;
+                        _array = tmp;
+                    }
+                    else {
+                        value_type* tmp = _alloc.allocate(capacity());
+                        size_type tmp_i = 0;
+                        size_type array_i = 0;
+                        for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *it);
+                            _alloc.destroy(_array + array_i);
+                        }
+                        for (size_t i = 0; i < count; i++) _alloc.construct(tmp + tmp_i++, value);
+                        for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *pos);
+                            _alloc.destroy(_array + array_i);
+                        }
+                        if (capacity())
+                            _alloc.deallocate(_array, capacity());
+                        _size += count;
+                        _array = tmp;
+                    }
+                }
+                template < typename InputIt > void insert( iterator pos, InputIt first, InputIt last ) {
 
-    };
+                    if (_size + std::distance<InputIt>(first, last) > _size_max) {
+                        value_type* tmp = _alloc.allocate(capacity() * 2);
+                        int tmp_i = 0;
+                        int array_i = 0;
+                        for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *it);
+                            _alloc.destroy(_array + array_i);
+                        }
+                        while (first != last)
+                            _alloc.construct(tmp + tmp_i++, *first++);
+                        for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *pos);
+                            _alloc.destroy(_array + array_i);
+                        }
+                        _alloc.deallocate(_array, capacity());
+                        _size_max = capacity() * 2;
+                        _size++;
+                        _array = tmp;
+                    }
+                    else {
+                        value_type* tmp = _alloc.allocate(capacity());
+                        int tmp_i = 0;
+                        int array_i = 0;
+                        for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *it);
+                            _alloc.destroy(_array + array_i);
+                        }
+                        while (first != last)
+                            _alloc.construct(tmp + tmp_i++, *first++);
+                        for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+                            _alloc.construct(tmp + tmp_i, *pos);
+                            _alloc.destroy(_array + array_i);
+                        }
+                        _alloc.deallocate(_array, capacity());
+                        _size++;
+                        _array = tmp;
+                    }
+                    }
+        
+                iterator erase( iterator pos ) {
+                    value_type* tmp = _alloc.allocate(capacity());
+                    int tmp_i = 0;
+                    int array_i = 0;
+                    for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
+                        _alloc.construct(tmp + tmp_i, *it);
+                        _alloc.destroy(_array + array_i);
+                    }
+                    pos++;
+                    _alloc.destroy(_array + array_i++);
+                    for (iterator its = end(); pos != its; pos++, tmp_i++, array_i++) {
+                        _alloc.construct(tmp + tmp_i, *pos);
+                        _alloc.destroy(_array + array_i);
+                    }
+                    _alloc.deallocate(_array, capacity());
+                    _size--;
+                    _array = tmp;
+                    return begin();
+                }
+                // iterator erase( iterator first, iterator last ) {
+
+                // }
+        };
 }
 
 #endif

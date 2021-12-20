@@ -203,9 +203,188 @@ int main(int ac, char **av){
     std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
     std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
 
+    
     for (size_t i = 0; i < tmp.size(); i++)
         std::cout << tmp[i] << " ";
     std::cout << std::endl << std::endl;
 
+    tmp.insert(tmp.end(), 4);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i] << " ";
+    std::cout << std::endl << std::endl;
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    tmp.insert(tmp.begin() + (tmp.size() / 2), 5);
+
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i] << " ";
+    std::cout << std::endl << std::endl;
+    } std::cout << "====================================================================" << std::endl << std::endl;
+
+    std::cout << "Test " << nb_test++ << ": Insert membre function" << std::endl << std::endl; {
+
+    ft::vector<char> tmp(5, 'O');
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i] << " ";
+    std::cout << std::endl << std::endl;
+
+    tmp.reserve(30);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    tmp.insert(tmp.begin() + 2, 51, 'I');
+    tmp.insert(tmp.end(), 13, 'G');
+    
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i] << " ";
+    std::cout << std::endl << std::endl;
+    } std::cout << "====================================================================" << std::endl << std::endl;
+
+    std::cout << "Test " << nb_test++ << ": Insert membre function" << std::endl << std::endl; {
+
+    ft::vector<char> tmp;
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i] << " ";
+    std::cout << std::endl << std::endl;
+
+    tmp.insert(tmp.begin(), 'A');
+    
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i] << " ";
+    std::cout << std::endl << std::endl;
+    } std::cout << "====================================================================" << std::endl << std::endl;
+    
+    std::cout << "Test " << nb_test++ << ": Insert membre function" << std::endl << std::endl; {
+
+    ft::vector<char> tmp(1, 'A');
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    tmp.reserve(100);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    tmp.insert(tmp.begin(), 50, 'B');
+    
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++)
+        std::cout << tmp[i] << " ";
+    std::cout << std::endl << std::endl;
+    } std::cout << "====================================================================" << std::endl << std::endl;
+    
+    std::cout << "Test " << nb_test++ << ": Insert membre function" << std::endl << std::endl; {
+
+    std::vector<int> tmp(3, 1);
+	std::vector<int> tmp1(10, 2);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+	tmp.reserve(10);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+	
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+	tmp.insert(tmp.begin(), tmp1.begin(), tmp1.end() - 1);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    } std::cout << "====================================================================" << std::endl << std::endl;
+
+    std::cout << "Test " << nb_test++ << ": Erase membre function" << std::endl << std::endl; {
+
+    ft::vector<int> tmp(1, 1);
+
+    tmp.insert(tmp.end(), 2);
+    tmp.insert(tmp.end(), 3);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    tmp.erase(tmp.begin() + 1);
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    tmp.erase(tmp.begin() + 1);
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    tmp.erase(tmp.begin());
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+    
+    } std::cout << "====================================================================" << std::endl << std::endl;
+
+    std::cout << "Test " << nb_test++ << ": Erase membre function" << std::endl << std::endl; {
+
+    ft::vector<int> tmp(1, 0);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+    
+    for (size_t i = 1; i < 100; i++)
+        tmp.insert(tmp.end(), i);    
+    
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    tmp.erase(tmp.begin() + 50, tmp.end());
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+    
+    tmp.erase(tmp.begin(), tmp.end());
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
     } std::cout << "====================================================================" << std::endl << std::endl;
 }
