@@ -183,6 +183,10 @@ namespace ft {
                 return *this;
             }
 
+            // void assign( size_type count, const T& value ) {
+                
+            // }
+
         public: // Operator overloading
 
             reference operator[] (size_type n) {
@@ -257,7 +261,6 @@ namespace ft {
             }
 
             iterator insert( iterator pos, const T& value ) {
-                size_type pos_len = &(*pos) - begin();
                 if (_size + 1 > capacity()) {
                     value_type* tmp;
                     if (!capacity())
@@ -301,11 +304,12 @@ namespace ft {
                     _size++;
                     _array = tmp;
                 }
-                return begin() + pos_len;
+                return begin();
             }
             void insert( iterator pos, size_type count, const T& value ) {
                 if (size() + count > capacity()) {
-                    size_type tmp_size = size() + count;
+                    size_type tmp_size = 0;
+                    for (tmp_size = capacity(); tmp_size < size() + count; tmp_size*=2);
                     value_type* tmp = _alloc.allocate(tmp_size);
                     size_type tmp_i = 0;
                     size_type array_i = 0;
@@ -388,6 +392,7 @@ namespace ft {
     
             iterator erase( iterator pos ) {
                 value_type* tmp = _alloc.allocate(capacity());
+                difference_type ret_i = pos - begin();
                 int tmp_i = 0;
                 int array_i = 0;
                 for (iterator it = begin(); it != pos; it++, tmp_i++, array_i++) {
@@ -403,10 +408,11 @@ namespace ft {
                 _alloc.deallocate(_array, capacity());
                 _size--;
                 _array = tmp;
-                return begin();
+                return iterator(_array + ret_i);
             }
             iterator erase( iterator first, iterator last ) {
                 value_type* tmp = _alloc.allocate(capacity());
+                difference_type ret_i = first - begin();
                 int tmp_i = 0;
                 int array_i = 0;
                 for (iterator it = begin(); it != first; it++, tmp_i++, array_i++) {
@@ -424,7 +430,7 @@ namespace ft {
                 _alloc.destroy(_array + array_i);
                 _size = tmp_i;
                 _array = tmp;
-                return begin();
+                return iterator(_array + ret_i);
             }
             void push_back( const T& value ) {
                 if (_size + 1 > capacity()) {
