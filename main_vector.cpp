@@ -7,20 +7,6 @@ int main(int ac, char **av){
     (void)av;
     int nb_test(1);
 
-    std::cout << "====================================================================" << std::endl << std::endl;
-
-    std::cout << "Test " << nb_test++ << ": Constructor error" << std::endl << std::endl;
-
-    try {
-        TESTED_NAMESPACE::vector<int> too_short(-1000, 3);
-    }
-    catch(const std::exception& e) {
-        // std::cerr << e.what() << '\n';
-    }
-    
-
-    std::cout << "====================================================================" << std::endl << std::endl;
-
     std::cout << "Test " << nb_test++ << ": Constructor by copy" << std::endl << std::endl; {
         TESTED_NAMESPACE::vector<char> tmp1(10, 'O');
         
@@ -235,13 +221,14 @@ int main(int ac, char **av){
     std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
     std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
 
-    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " ";
-    std::cout << std::endl << std::endl;
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
 
     tmp.reserve(30);
 
     std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
     std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
     
     tmp.insert(tmp.begin() + 2, 51, 'I');
 
@@ -536,6 +523,27 @@ int main(int ac, char **av){
     std::cout << "tmp2.max_size() :" << tmp2.capacity() << std::endl << std::endl;
     
     for (size_t i = 0; i < tmp2.size(); i++) std::cout << tmp2[i] << " "; std::cout << std::endl << std::endl;
+
+    } std::cout << "====================================================================" << std::endl << std::endl;
+
+    std::cout << "Test " << nb_test++ << ": Assign membre function" << std::endl << std::endl; {
+
+    TESTED_NAMESPACE::vector<int> tmp;
+
+    for (size_t i = 0; i < 10; i++)
+        tmp.push_back(i);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
+
+    tmp.assign(20, 42);
+
+    std::cout << "tmp.size() :" << tmp.size() << std::endl << std::endl;
+    std::cout << "tmp.max_size() :" << tmp.capacity() << std::endl << std::endl;
+    
+    for (size_t i = 0; i < tmp.size(); i++) std::cout << tmp[i] << " "; std::cout << std::endl << std::endl;
 
     } std::cout << "====================================================================" << std::endl << std::endl;
 }

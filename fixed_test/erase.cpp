@@ -1,7 +1,5 @@
 #include "fixed_test.hpp"
 
-#define TESTED_TYPE std::string
-
 int		main(void)
 {
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(10);
