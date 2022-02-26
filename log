@@ -1,5 +1,2 @@
 diff of fixed_test/relational_ope_stack.cpp :
-6c6
-< eq: 0 | ne: 1
----
-> eq: 1 | ne: 0
+0 diff

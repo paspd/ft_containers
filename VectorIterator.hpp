@@ -20,8 +20,8 @@ protected:
 public:
 	VectorIterator(): array(NULL) {}
 	VectorIterator(iterator_type new_array): array(new_array) {}
-	template <class U>
-	VectorIterator(VectorIterator<U> const & src): array(src.base()) {}
+	template <class Iter>
+	VectorIterator(VectorIterator<Iter> const & src): array(src.base()) {}
 	~VectorIterator() {}
 
 	VectorIterator & operator=(const VectorIterator & src) {
